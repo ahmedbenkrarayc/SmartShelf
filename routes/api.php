@@ -21,5 +21,8 @@ Route::middleware(['auth:sanctum', 'auth.role:client'])->group(function(){
 
 Route::get('/category/list', [CategoryController::class, 'index']);
 Route::post('/category/create', [CategoryController::class, 'store']);
+Route::put('/category/update/{id}', [CategoryController::class, 'update']);
+Route::get('/category/{id}', [CategoryController::class, 'show']);
+Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
 Route::prefix('category')->middleware(['auth:sanctum', 'auth.role:admin'])->group(function(){
 });
