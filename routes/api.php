@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -18,8 +19,6 @@ Route::middleware(['auth:sanctum', 'auth.role:client'])->group(function(){
     });
 });
 
-Route::middleware(['auth:sanctum', 'auth.role:admin'])->group(function(){
-    Route::get('/test/a', function(){
-        return response()->json('hi admin');
-    });
+Route::prefix('category')->middleware(['auth:sanctum', 'auth.role:admin'])->group(function(){
+    Route::get('/category/list', [CategoryController::class, 'index']);
 });
