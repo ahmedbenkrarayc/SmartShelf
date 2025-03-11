@@ -19,6 +19,7 @@ Route::middleware(['auth:sanctum', 'auth.role:client'])->group(function(){
     });
 });
 
+Route::get('/category/list', [CategoryController::class, 'index']);
+Route::post('/category/create', [CategoryController::class, 'store']);
 Route::prefix('category')->middleware(['auth:sanctum', 'auth.role:admin'])->group(function(){
-    Route::get('/category/list', [CategoryController::class, 'index']);
 });

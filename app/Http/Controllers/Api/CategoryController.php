@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Http\Resources\CategoryResource;
+use App\Http\Requests\StoreCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -15,12 +16,17 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        $request->validated();
+
+        $category = Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return new CategoryResource($category);
     }
 
     /**
