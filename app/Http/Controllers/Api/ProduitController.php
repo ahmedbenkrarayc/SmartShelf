@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProduitRequest;
 use App\Http\Requests\UpdateProduitRequest;
@@ -23,8 +24,8 @@ class ProduitController extends Controller
         return (new ProduitResource($product))->response()->setStatusCode(201);
     }
 
-    public function show(int $id){
-        $product = Produit::find($id);
+    public function show(string $slug){
+        $product = Produit::whereRaw('LOWER(name) = ?', [Str::slug($slug, '-')])->first();
         if(!$product){
             return response()->json([
                 'message' => 'Product not found !'
