@@ -27,7 +27,7 @@ class RayonController extends Controller
             'description' => $request->description,
         ]);
 
-        return new RayonResource($rayon);
+        return (new RayonResource($rayon))->response()->setStatus(201);
     }
 
 
@@ -69,6 +69,6 @@ class RayonController extends Controller
         }
 
         $rayon->delete();
-        return response()->json(['message' => 'Rayon deleted successfully'], 204);
+        return response()->json([], 204);
     }
 }

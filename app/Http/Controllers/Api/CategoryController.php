@@ -27,7 +27,7 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return new CategoryResource($category);
+        return (new CategoryResource($category))->response()->setStatus(201);
     }
 
 
@@ -69,6 +69,6 @@ class CategoryController extends Controller
         }
 
         $category->delete();
-        return response()->json(['message' => 'Category deleted successfully'], 204);
+        return response()->json([], 204);
     }
 }
