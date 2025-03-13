@@ -25,7 +25,7 @@ class ProduitController extends Controller
     }
 
     public function show(string $slug){
-        $product = Produit::whereRaw('LOWER(name) = ?', [Str::slug($slug, '-')])->first();
+        $product = Produit::with('category', 'rayon')->whereRaw('LOWER(name) = ?', [Str::replace('-', ' ', strtolower($slug))])->first();
         if(!$product){
             return response()->json([
                 'message' => 'Product not found !'
@@ -35,7 +35,7 @@ class ProduitController extends Controller
         return new ProduitResource($product);
     }
 
-    public function update(UpdateProduitRequest $request){
+    public function update(UpdateProduitRequest $request, int $id){
         $validated = $request->validated();
 
         $product = Produit::find($id);
@@ -59,5 +59,37 @@ class ProduitController extends Controller
 
         $product->delete();
         return response()->json([], 204);
+    }
+
+    public function productByRayon(string $rayon){
+        $produits = Produit::with('category', 'rayon')->whereHas('rayon', function($query) use ($rayon){
+            $query->where('name', $rayon);
+        })->get();
+
+        return ProduitResource::collection($produits);
+    }
+
+    public function productByKeyword(string $keyword){
+        $produits = Produit::with('category', 'rayon')->where('name', 'like', "%${keyword}%")->orWhereHas('category', function($query) use ($keyword){
+            $query->where('name', $keyword);
+        })->get();
+
+        return ProduitResource::collection($produits);
+    }
+
+    public function promotions(){
+        $produits = Produit::with('category', 'rayon')->where('is_promotion', 1)->get();
+        return ProduitResource::collection($produits);
+    }
+
+    public function top10(){
+        $produits = Produit::with('category', 'rayon')
+        ->WhereHas('orderitems')
+        ->withCount('orderitems') 
+        ->orderByDesc('orderitems_count')  
+        ->limit(10)
+        ->get();
+
+        return ProduitResource::collection($produits);
     }
 }
