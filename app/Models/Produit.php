@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
 use App\Models\Rayon;
+use App\Models\OrderProduit;
 
 class Produit extends Model
 {
@@ -25,5 +26,9 @@ class Produit extends Model
 
     public function rayon(){
         return $this->belongsTo(Rayon::class, 'rayon_id');
+    }
+
+    public function orderitems(){
+        return $this->hasMany(OrderProduit::class, 'produit_id');
     }
 }
