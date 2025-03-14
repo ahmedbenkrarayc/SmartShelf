@@ -27,7 +27,7 @@ class RayonController extends Controller
             'description' => $request->description,
         ]);
 
-        return (new RayonResource($rayon))->response()->setStatus(201);
+        return (new RayonResource($rayon))->response()->setStatusCode(201);
     }
 
 
