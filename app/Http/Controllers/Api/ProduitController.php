@@ -92,4 +92,9 @@ class ProduitController extends Controller
 
         return ProduitResource::collection($produits);
     }
+
+    public function stockCritique(){
+        $produits = Produit::where('stock', '<=', 5)->get();
+        return ProduitResource::collection($produits);
+    }
 }
