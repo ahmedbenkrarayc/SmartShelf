@@ -37,7 +37,7 @@ class OrderController extends Controller
 
             DB::commit();
             $order->load('items', 'user');
-            return new OrderResource($order)->response()->setStatusCode(201);
+            return (new OrderResource($order))->response()->setStatusCode(201);
         }catch(\Exception $e){
             DB::rollback();
             return response()->json(['error' => 'Failed to place order', 'message' => $e->getMessage()], 500);
