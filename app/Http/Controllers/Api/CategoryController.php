@@ -27,7 +27,7 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return (new CategoryResource($category))->response()->setStatus(201);
+        return (new CategoryResource($category))->response()->setStatusCode(201);
     }
 
 
